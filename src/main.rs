@@ -48,6 +48,7 @@ fn day1_part2() -> Option<i32> {
 
 fn main() {
     let matches = clap_app!(myapp =>
+        (@setting SubcommandRequiredElseHelp)
         (@subcommand "day1-part1" =>)
         (@subcommand "day1-part2" =>)
     ).get_matches();
