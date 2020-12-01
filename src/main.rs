@@ -1,4 +1,4 @@
-use clap::App;
+use clap::clap_app;
 use std::io::{self, BufRead};
 
 fn read_numbers() -> Vec<i32> {
@@ -47,10 +47,10 @@ fn day1_part2() -> Option<i32> {
 }
 
 fn main() {
-    let matches = App::new("aoc_2020")
-        .subcommand(App::new("day1-part1"))
-        .subcommand(App::new("day1-part2"))
-        .get_matches();
+    let matches = clap_app!(myapp =>
+        (@subcommand "day1-part1" =>)
+        (@subcommand "day1-part2" =>)
+    ).get_matches();
 
     let answer = match matches.subcommand() {
         Some(("day1-part1", _)) => day1_part1(),
