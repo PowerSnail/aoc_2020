@@ -35,6 +35,5 @@ pub fn part2() -> Option<i64> {
             }
         }
     }
-    println!("{:#?}", tree_counts);
     Some(tree_counts[0] * tree_counts[1] * tree_counts[2] * tree_counts[3] * tree_counts[4])
 }
