@@ -1,18 +1,25 @@
 use clap::clap_app;
-use std::{str::FromStr, io::{self, BufRead}};
 use regex::Regex;
-
+use std::{
+    io::{self, BufRead},
+    str::FromStr,
+};
 
 fn read_lines<T>() -> Vec<T>
-    where T : FromStr 
+where
+    T: FromStr,
 {
     let stdin = io::stdin();
     let mut numbers: Vec<T> = Vec::new();
     for line in stdin.lock().lines() {
-        numbers.push(line.unwrap().parse().unwrap_or_else(|_| panic!("Parse Failed!")));
+        numbers.push(
+            line.unwrap()
+                .parse()
+                .unwrap_or_else(|_| panic!("Parse Failed!")),
+        );
     }
     return numbers;
-} 
+}
 
 fn day1_part1() -> Option<i64> {
     let mut numbers: Vec<i64> = read_lines();
@@ -43,7 +50,7 @@ fn day1_part2() -> Option<i64> {
             let remain = 2020 - numbers[lo] - numbers[hi];
             match numbers.binary_search(&remain) {
                 Ok(_) => return Some(remain * numbers[lo] * numbers[hi]),
-                _ => continue
+                _ => continue,
             }
         }
     }
@@ -58,8 +65,14 @@ fn day2_part1() -> Option<i64> {
         let line = &line.unwrap();
         let capture = password_rule_re.captures(line).unwrap();
         let target = capture[3].as_bytes()[0];
-        let letter_count = capture[4].as_bytes().into_iter().filter(|&&x| x == target).count();
-        if capture[1].parse::<usize>().unwrap() <= letter_count && letter_count <= capture[2].parse::<usize>().unwrap() {
+        let letter_count = capture[4]
+            .as_bytes()
+            .into_iter()
+            .filter(|&&x| x == target)
+            .count();
+        if capture[1].parse::<usize>().unwrap() <= letter_count
+            && letter_count <= capture[2].parse::<usize>().unwrap()
+        {
             count_valid += 1;
         }
     }
@@ -77,7 +90,7 @@ fn day2_part2() -> Option<i64> {
         let j: usize = capture[2].parse::<usize>().unwrap() - 1;
         let target = capture[3].as_bytes()[0];
         let password = capture[4].as_bytes();
-        
+
         if (password[i] == target) ^ (password[j] == target) {
             count_valid += 1;
         }
@@ -87,7 +100,7 @@ fn day2_part2() -> Option<i64> {
 
 fn day3_part1() -> Option<i64> {
     let stdin = io::stdin();
-    let mut x : usize = 3;
+    let mut x: usize = 3;
     let mut tree_count = 0;
     for line in stdin.lock().lines().skip(1) {
         let line = &line.unwrap();
@@ -101,7 +114,6 @@ fn day3_part1() -> Option<i64> {
     }
     Some(tree_count)
 }
-
 
 fn day3_part2() -> Option<i64> {
     let stdin = io::stdin();
@@ -124,6 +136,99 @@ fn day3_part2() -> Option<i64> {
     Some(tree_counts[0] * tree_counts[1] * tree_counts[2] * tree_counts[3] * tree_counts[4])
 }
 
+fn day4_part1() -> Option<i64> {
+    let mut valid_count = 0;
+    let mut passport = vec![false; 7];
+
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line.unwrap();
+        if line == "" {
+            valid_count += passport.iter().all(|&b| b) as i64;
+            passport = vec![false; 7];
+            continue;
+        }
+        for token in line.split(" ") {
+            match token.split(":").nth(0).unwrap() {
+                "byr" => passport[0] = true,
+                "iyr" => passport[1] = true,
+                "eyr" => passport[2] = true,
+                "hgt" => passport[3] = true,
+                "hcl" => passport[4] = true,
+                "ecl" => passport[5] = true,
+                "pid" => passport[6] = true,
+                "cid" => (),
+                _ => {
+                    println!("Not matching: {}", token);
+                    panic!("Parser error");
+                }
+            }
+        }
+    }
+    Some(valid_count)
+}
+
+fn day4_part2() -> Option<i64> {
+    let re_hgt = Regex::new(r"^(\d+)(in|cm)$").unwrap();
+    let re_hcl = Regex::new(r"^#[a-f0-9]{6}$").unwrap();
+    let re_ecl = Regex::new(r"^(amb)|(blu)|(brn)|(gry)|(grn)|(hzl)|(oth)$").unwrap();
+    let re_pid = Regex::new(r"^\d{9}$").unwrap();
+
+    let mut valid_count = 0;
+    let mut passport = vec![false; 7];
+
+    let stdin = io::stdin();
+    for line in stdin.lock().lines() {
+        let line = line.unwrap();
+        let line = line.trim();
+        if line == "" {
+            valid_count += passport.iter().all(|&b| b) as i64;
+            passport = vec![false; 7];
+            continue;
+        }
+        for token in line.split(" ") {
+            let tokens = token.split(":").take(2).collect::<Vec<_>>();
+            match &tokens[..] {
+                ["byr", value] => {
+                    if let Ok(number) = value.parse::<u32>() {
+                        passport[0] = number >= 1920 && number <= 2002;
+                    }
+                }
+                ["iyr", value] => {
+                    if let Ok(number) = value.parse::<u32>() {
+                        passport[1] = number >= 2010 && number <= 2020;
+                    }
+                }
+                ["eyr", value] => {
+                    if let Ok(number) = value.parse::<u32>() {
+                        passport[2] = number >= 2020 && number <= 2030;
+                    }
+                }
+                ["hgt", value] => {
+                    // if re_hgt.is_match(value) {
+                    if let Some(cap) = re_hgt.captures(value) {
+                        if let Ok(number) = cap[1].parse::<u32>() {
+                            passport[3] = match &cap[2] {
+                                "cm" => number >= 150 && number <= 193,
+                                "in" => number >= 59 && number <= 76,
+                                _ => false,
+                            }
+                        }
+                    }
+                }
+                ["hcl", value] => passport[4] = re_hcl.is_match(value),
+                ["ecl", value] => passport[5] = re_ecl.is_match(value),
+                ["pid", value] => passport[6] = re_pid.is_match(value),
+                ["cid", _] => (),
+                _ => {
+                    println!("Not matching: {}", token);
+                    panic!("Parser error");
+                }
+            }
+        }
+    }
+    Some(valid_count)
+}
 fn main() {
     let matches = clap_app!(myapp =>
         (@setting SubcommandRequiredElseHelp)
@@ -133,7 +238,10 @@ fn main() {
         (@subcommand "day2-part2" =>)
         (@subcommand "day3-part1" =>)
         (@subcommand "day3-part2" =>)
-    ).get_matches();
+        (@subcommand "day4-part1" =>)
+        (@subcommand "day4-part2" =>)
+    )
+    .get_matches();
 
     let answer = match matches.subcommand() {
         Some(("day1-part1", _)) => day1_part1(),
@@ -142,6 +250,8 @@ fn main() {
         Some(("day2-part2", _)) => day2_part2(),
         Some(("day3-part1", _)) => day3_part1(),
         Some(("day3-part2", _)) => day3_part2(),
+        Some(("day4-part1", _)) => day4_part1(),
+        Some(("day4-part2", _)) => day4_part2(),
         _ => unreachable!(),
     };
 
