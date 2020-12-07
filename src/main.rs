@@ -5,6 +5,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 mod util;
 
 
@@ -24,6 +25,8 @@ fn main() {
         (@subcommand "day5-part2" =>)
         (@subcommand "day6-part1" =>)
         (@subcommand "day6-part2" =>)
+        (@subcommand "day7-part1" =>)
+        (@subcommand "day7-part2" =>)
     )
     .get_matches();
 
@@ -40,6 +43,8 @@ fn main() {
         Some(("day5-part2", _)) => day5::part2(),
         Some(("day6-part1", _)) => day6::part1(),
         Some(("day6-part2", _)) => day6::part2(),
+        Some(("day7-part1", _)) => day7::part1(),
+        Some(("day7-part2", _)) => day7::part2(),
         _ => unreachable!(),
     };
 
