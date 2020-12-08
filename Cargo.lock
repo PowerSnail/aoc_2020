@@ -13,6 +13,7 @@ name = "aoc_2020"
 version = "0.1.0"
 dependencies = [
  "clap 3.0.0-beta.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "lazy_static 1.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "regex 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

@@ -26,3 +26,14 @@ pub fn lines() -> Vec<String>
     let stdin = io::stdin();
     stdin.lock().lines().map(|r| r.unwrap()).collect()
 }
+
+
+#[macro_export]
+macro_rules! regex_static {
+    ($i:ident, $j:literal) => {{
+        lazy_static! {
+            static ref $i: Regex = Regex::new($j).unwrap();
+        }
+        &*$i
+    }};
+}
