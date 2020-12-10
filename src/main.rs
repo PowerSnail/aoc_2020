@@ -1,5 +1,6 @@
 use clap::clap_app;
 mod day1;
+mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -11,8 +12,6 @@ mod day9;
 
 #[macro_use]
 mod util;
-
-
 
 fn main() {
     let matches = clap_app!(myapp =>
@@ -35,6 +34,8 @@ fn main() {
         (@subcommand "day8-part2" =>)
         (@subcommand "day9-part1" =>)
         (@subcommand "day9-part2" =>)
+        (@subcommand "day10-part1" =>)
+        (@subcommand "day10-part2" =>)
     )
     .get_matches();
 
@@ -57,6 +58,8 @@ fn main() {
         Some(("day8-part2", _)) => day8::part2(),
         Some(("day9-part1", _)) => day9::part1(),
         Some(("day9-part2", _)) => day9::part2(),
+        Some(("day10-part1", _)) => day10::part1(),
+        Some(("day10-part2", _)) => day10::part2(),
         _ => unreachable!(),
     };
 
