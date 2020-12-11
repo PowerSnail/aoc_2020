@@ -21,7 +21,7 @@ fn init_seating(input: &Vec<String>) -> Vec<Vec<u8>> {
     seating
 }
 
-fn count_occupied(x: usize, y: usize, seating: &Vec<Vec<u8>>) -> usize {
+fn count_occupied_neighbor(x: usize, y: usize, seating: &Vec<Vec<u8>>) -> usize {
     seating[y - 1..y + 2]
         .iter()
         .map(|row| row[x - 1..x + 2].iter().filter(|&&n| n == OCCUPIED).count())
@@ -36,14 +36,14 @@ pub fn part1() -> Option<i64> {
 
     while has_change {
         has_change = false;
-        for y in 1..seating.len() {
+        for y in 1..seating.len() - 1 {
             for x in 1..seating[0].len() - 1 {
                 new[y][x] = match seating[y][x] {
-                    OCCUPIED if count_occupied(x, y, &seating) >= 5 => {
+                    OCCUPIED if count_occupied_neighbor(x, y, &seating) >= 5 => {
                         has_change = true;
                         EMPTY
                     }
-                    EMPTY if count_occupied(x, y, &seating) == 0 => {
+                    EMPTY if count_occupied_neighbor(x, y, &seating) == 0 => {
                         has_change = true;
                         OCCUPIED
                     }
@@ -84,7 +84,7 @@ fn search(x: i64, y: i64, dx: i64, dy: i64, seating: &Vec<Vec<u8>>) -> i64 {
     }
 }
 
-fn count_seen(x: usize, y: usize, seating: &Vec<Vec<u8>>) -> i64 {
+fn count_occupied_seen(x: usize, y: usize, seating: &Vec<Vec<u8>>) -> i64 {
     DIRECTION
         .iter()
         .map(|&(dx, dy)| search(x as i64 + dx, y as i64 + dy, dx, dy, seating))
@@ -102,11 +102,11 @@ pub fn part2() -> Option<i64> {
         for y in 1..seating.len() - 1 {
             for x in (1..seating[y].len() - 1).filter(|&x| seating[y][x] != FLOOR) {
                 new[y][x] = match seating[y][x] {
-                    OCCUPIED if count_seen(x, y, &seating) >= 5 => {
+                    OCCUPIED if count_occupied_seen(x, y, &seating) >= 5 => {
                         has_change = true;
                         EMPTY
                     }
-                    EMPTY if count_seen(x, y, &seating) == 0 => {
+                    EMPTY if count_occupied_seen(x, y, &seating) == 0 => {
                         has_change = true;
                         OCCUPIED
                     }
