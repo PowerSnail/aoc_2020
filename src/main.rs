@@ -1,6 +1,7 @@
 use clap::clap_app;
 mod day1;
 mod day10;
+mod day11;
 mod day2;
 mod day3;
 mod day4;
@@ -36,6 +37,8 @@ fn main() {
         (@subcommand "day9-part2" =>)
         (@subcommand "day10-part1" =>)
         (@subcommand "day10-part2" =>)
+        (@subcommand "day11-part1" =>)
+        (@subcommand "day11-part2" =>)
     )
     .get_matches();
 
@@ -60,6 +63,8 @@ fn main() {
         Some(("day9-part2", _)) => day9::part2(),
         Some(("day10-part1", _)) => day10::part1(),
         Some(("day10-part2", _)) => day10::part2(),
+        Some(("day11-part1", _)) => day11::part1(),
+        Some(("day11-part2", _)) => day11::part2(),
         _ => unreachable!(),
     };
 
