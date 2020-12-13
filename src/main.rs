@@ -3,7 +3,20 @@ mod day1;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
+mod day14;
+mod day15;
+mod day16;
+mod day17;
+mod day18;
+mod day19;
 mod day2;
+mod day20;
+mod day21;
+mod day22;
+mod day23;
+mod day24;
+mod day25;
 mod day3;
 mod day4;
 mod day5;
@@ -42,6 +55,32 @@ fn main() {
         (@subcommand "day11-part2" =>)
         (@subcommand "day12-part1" =>)
         (@subcommand "day12-part2" =>)
+        (@subcommand "day13-part1" =>)
+        (@subcommand "day13-part2" =>)
+        (@subcommand "day14-part1" =>)
+        (@subcommand "day14-part2" =>)
+        (@subcommand "day15-part1" =>)
+        (@subcommand "day15-part2" =>)
+        (@subcommand "day16-part1" =>)
+        (@subcommand "day16-part2" =>)
+        (@subcommand "day17-part1" =>)
+        (@subcommand "day17-part2" =>)
+        (@subcommand "day18-part1" =>)
+        (@subcommand "day18-part2" =>)
+        (@subcommand "day19-part1" =>)
+        (@subcommand "day19-part2" =>)
+        (@subcommand "day20-part1" =>)
+        (@subcommand "day20-part2" =>)
+        (@subcommand "day21-part1" =>)
+        (@subcommand "day21-part2" =>)
+        (@subcommand "day22-part1" =>)
+        (@subcommand "day22-part2" =>)
+        (@subcommand "day23-part1" =>)
+        (@subcommand "day23-part2" =>)
+        (@subcommand "day24-part1" =>)
+        (@subcommand "day24-part2" =>)
+        (@subcommand "day25-part1" =>)
+        (@subcommand "day25-part2" =>)
     )
     .get_matches();
 
@@ -70,6 +109,32 @@ fn main() {
         Some(("day11-part2", _)) => day11::part2(),
         Some(("day12-part1", _)) => day12::part1(),
         Some(("day12-part2", _)) => day12::part2(),
+        Some(("day13-part1", _)) => day13::part1,
+        Some(("day13-part2", _)) => day13::part2,
+        Some(("day14-part1", _)) => day14::part1,
+        Some(("day14-part2", _)) => day14::part2,
+        Some(("day15-part1", _)) => day15::part1,
+        Some(("day15-part2", _)) => day15::part2,
+        Some(("day16-part1", _)) => day16::part1,
+        Some(("day16-part2", _)) => day16::part2,
+        Some(("day17-part1", _)) => day17::part1,
+        Some(("day17-part2", _)) => day17::part2,
+        Some(("day18-part1", _)) => day18::part1,
+        Some(("day18-part2", _)) => day18::part2,
+        Some(("day19-part1", _)) => day19::part1,
+        Some(("day19-part2", _)) => day19::part2,
+        Some(("day20-part1", _)) => day20::part1,
+        Some(("day20-part2", _)) => day20::part2,
+        Some(("day21-part1", _)) => day21::part1,
+        Some(("day21-part2", _)) => day21::part2,
+        Some(("day22-part1", _)) => day22::part1,
+        Some(("day22-part2", _)) => day22::part2,
+        Some(("day23-part1", _)) => day23::part1,
+        Some(("day23-part2", _)) => day23::part2,
+        Some(("day24-part1", _)) => day24::part1,
+        Some(("day24-part2", _)) => day24::part2,
+        Some(("day25-part1", _)) => day25::part1,
+        Some(("day25-part2", _)) => day25::part2,
         _ => unreachable!(),
     };
 
