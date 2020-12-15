@@ -1,7 +1,10 @@
-use std::{str::FromStr, io::{self, BufRead}};
+use std::{
+    io::{self, BufRead},
+    str::FromStr,
+};
 
 // Copyright (c) 2020 PowerSnail
-// 
+//
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
@@ -21,12 +24,10 @@ where
     return numbers;
 }
 
-pub fn lines() -> Vec<String>
-{
+pub fn lines() -> Vec<String> {
     let stdin = io::stdin();
     stdin.lock().lines().map(|r| r.unwrap()).collect()
 }
-
 
 #[macro_export]
 macro_rules! regex_static {

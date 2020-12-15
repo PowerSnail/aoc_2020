@@ -1,5 +1,5 @@
 #![feature(iterator_fold_self)]
-
+#![feature(entry_insert)]
 use clap::clap_app;
 mod day1;
 mod day10;
