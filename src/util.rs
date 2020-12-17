@@ -38,3 +38,12 @@ macro_rules! regex_static {
         &*$i
     }};
 }
+
+#[macro_export]
+macro_rules! remove_first {
+    ($i:expr, $n:expr) => {{
+        if let Some(x) = $i.iter().position(|x| *x == $n) {
+            $i.remove(x);
+        }
+    }};
+}
