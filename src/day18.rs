@@ -12,7 +12,6 @@ enum Token {
     Add,
     Multiply,
     Number(i64),
-    End,
 }
 
 fn tokenize(line: &str) -> Vec<Token> {
@@ -31,22 +30,25 @@ fn tokenize(line: &str) -> Vec<Token> {
         .collect()
 }
 
-fn eval_expr_(tokens: &[Token], i: usize) -> (usize, i64) {
+fn eval_expr_easy(tokens: &[Token], i: usize) -> (usize, i64) {
     let (i, lhs) = match tokens[i] {
         Token::Number(n) => (i + 1, n),
-        Token::LeftBracket => eval_expr_(tokens, i + 1),
+        Token::LeftBracket => eval_expr_easy(tokens, i + 1),
         _ => panic!(format!("Malformed; got {:?} at left hand side", tokens[i])),
     };
+    if i == tokens.len() {
+        return (i, lhs);
+    }
     match tokens[i] {
         Token::Add => {
-            let (i, rhs) = eval_expr_(tokens, i + 1);
+            let (i, rhs) = eval_expr_easy(tokens, i + 1);
             (i, lhs + rhs)
         }
         Token::Multiply => {
-            let (i, rhs) = eval_expr_(tokens, i + 1);
+            let (i, rhs) = eval_expr_easy(tokens, i + 1);
             (i, lhs * rhs)
         }
-        Token::RightBracket | Token::End => (i + 1, lhs),
+        Token::RightBracket => (i + 1, lhs),
         _ => panic!(format!(
             "Malformed; got {:?} after left hand side",
             tokens[i]
@@ -54,26 +56,23 @@ fn eval_expr_(tokens: &[Token], i: usize) -> (usize, i64) {
     }
 }
 
-fn eval_expr_easy(tokens: &[Token]) -> i64 {
-    let reversed_tokens: Vec<_> = tokens
-        .iter()
-        .rev()
-        .map(|&t| match t {
-            Token::LeftBracket => Token::RightBracket,
-            Token::RightBracket => Token::LeftBracket,
-            t => t,
-        })
-        .chain(vec![Token::End].into_iter())
-        .collect();
-    eval_expr_(&reversed_tokens, 0).1
-}
-
 pub fn part1() -> Option<i64> {
     Some(
         lines()
             .iter()
-            .map(|s| tokenize(s))
-            .map(|tokens| eval_expr_easy(&tokens))
+            .map(|s| {
+                // Reverse the string, because I'm too lazy to implement left associativity
+                s.chars()
+                    .rev()
+                    .map(|c| match c {
+                        '(' => ')',
+                        ')' => '(',
+                        _ => c,
+                    })
+                    .collect::<String>()
+            })
+            .map(|s| tokenize(&s))
+            .map(|tokens| eval_expr_easy(&tokens, 0).1)
             .sum(),
     )
 }
