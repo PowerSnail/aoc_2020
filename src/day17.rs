@@ -98,7 +98,7 @@ pub fn part1() -> Option<i64> {
     // - If a cube is *inactive* but *exactly `3`* of its neighbors are active, the cube becomes *active*. Otherwise, the cube remains *inactive*.
     let mut cube = Cube::load(&lines());
 
-    for cycle in 0..6 {
+    for _ in 0..6 {
         let mut new_cube = Cube::new(
             cube.x_lo - 1,
             cube.x_hi + 1,
