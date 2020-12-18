@@ -77,6 +77,7 @@ pub fn part1() -> Option<i64> {
     )
 }
 
+// | -------------- Part 2 ---------------|
 // Expr := Expr2 (* Expr2)*
 // Expr2 := Element (+ Element)*
 // Element := Number | ( Expr )
