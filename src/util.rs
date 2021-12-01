@@ -31,12 +31,11 @@ pub fn lines() -> Vec<String> {
 
 #[macro_export]
 macro_rules! regex_static {
-    ($i:ident, $j:literal) => {{
+    ($i:ident, $j:literal) => {
         lazy_static! {
             static ref $i: Regex = Regex::new($j).unwrap();
         }
-        &*$i
-    }};
+    };
 }
 
 #[macro_export]
